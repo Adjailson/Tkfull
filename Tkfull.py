@@ -1,4 +1,4 @@
-#version-0.0.3
+#version-0.0.4
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -8,13 +8,13 @@ class Janela:
     __arrayObjetos = [tk.Button]
 
     def __init__(self):
-        self.janela = tk.Tk()
+        self.__janela = tk.Tk()
         
     def start(self):
-        return self.janela.mainloop()
+        return self.__janela.mainloop()
 
     def gerar(self,objetos):
-        frame = tk.Frame(self.janela)
+        frame = tk.Frame(self.__janela)
         for l in range(len(objetos)):
             for c in range(len(objetos[l])):
                 oQueE = objetos[l][c]
@@ -106,6 +106,9 @@ class Janela:
         except NameError:
             print(f"Erro! -Variável '{posicao}' não definida.")
             
+    def getObjetos(self):
+        return self.__arrayObjetos
+    
     def apagarTexto(self,posicao,acao=None):
         if(type(self.__arrayObjetos[posicao]) == tk.Entry):
             if(acao == None):
@@ -116,5 +119,26 @@ class Janela:
                 tamanho = len(self.getTexto(posicao))
                 self.__arrayObjetos[posicao].delete(tamanho-1,tk.END)
 
-    def getObjetos(self):
-        return self.__arrayObjetos
+    def verPosicoes(self):
+        view = ""
+        for i in range(1,len(self.getObjetos())):
+            if(type(self.__arrayObjetos[i]) == tk.Button):
+                view = view+str(i)+"-> Button:"+self.getObjetos()[i]['text']+"\n"
+            elif(type(self.__arrayObjetos[i]) == tk.Entry):
+                view = view+str(i)+"-> Entry\n"
+            elif(type(self.__arrayObjetos[i]) == ttk.Combobox):
+                view = view+str(i)+"-> Combobox\n"
+            elif(type(self.__arrayObjetos[i]) == tk.Label):
+                view = view+str(i)+"-> Label:"+self.getObjetos()[i]['text']+"\n"
+        return view
+
+    #Configurações da janela
+    def titulo(self,titulo):self.__janela.title(titulo)
+    def tamanho(self, dimensoes):self.__janela.geometry(dimensoes)
+    def maximize(self, boolean):self.__janela.resizable(0,boolean)
+    def icone(self, local,todas=False):
+        try:
+            icon = tk.PhotoImage(file=local)
+            self.__janela.iconphoto(todas, icon)
+        except:
+            print("Verifique nome, local, extensão .png e tamanho da imagem!")
