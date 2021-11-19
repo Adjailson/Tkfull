@@ -1,4 +1,4 @@
-#version-0.0.4
+#version-0.0.5
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -6,6 +6,7 @@ class Janela:
 
     __estilo = {'font':('Arial',14)}
     __arrayObjetos = [tk.Button]
+    __imagem = str
 
     def __init__(self):
         self.__janela = tk.Tk()
@@ -49,6 +50,30 @@ class Janela:
                     box.set("Selecione")
                     box.grid(row=l,column=c)
                     self.__arrayObjetos.append(box)
+
+                if(type(oQueE) == dict):#Button imagen
+                    texto = str
+                    url = str
+                    for i in oQueE:
+                        texto = i
+                        url = oQueE.get(i)
+                    self.__imagem = tk.PhotoImage(file=url)
+                    if("*" in texto):
+                        btnImg = tk.Button(frame,
+                                           text=texto[1:len(texto)],
+                                           image=self.__imagem,
+                                           compound=tk.LEFT)
+                        btnImg.config(self.__estilo)
+                        btnImg.grid(row=l,column=c)
+                        self.__arrayObjetos.append(btnImg)
+                    else:
+                        labelImg = tk.Label(frame,
+                                           text=texto,
+                                           image=self.__imagem,
+                                           compound=tk.TOP)
+                        labelImg.config(self.__estilo)
+                        labelImg.grid(row=l,column=c)
+                        self.__arrayObjetos.append(labelImg)
                     
         frame.pack()
         
@@ -142,3 +167,5 @@ class Janela:
             self.__janela.iconphoto(todas, icon)
         except:
             print("Verifique nome, local, extensão .png e tamanho da imagem!")
+
+                
