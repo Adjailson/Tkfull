@@ -6,7 +6,6 @@ class Janela:
 
     __estilo = {'font':('Arial',14)}
     __arrayObjetos = [tk.Button]
-    __imagem = str
 
     def __init__(self):
         self.__janela = tk.Tk()
@@ -57,19 +56,20 @@ class Janela:
                     for i in oQueE:
                         texto = i
                         url = oQueE.get(i)
-                    self.__imagem = tk.PhotoImage(file=url)
                     if("*" in texto):
+                        self.__imgButton = tk.PhotoImage(file=url)
                         btnImg = tk.Button(frame,
                                            text=texto[1:len(texto)],
-                                           image=self.__imagem,
+                                           image=self.__imgButton,
                                            compound=tk.LEFT)
                         btnImg.config(self.__estilo)
                         btnImg.grid(row=l,column=c)
                         self.__arrayObjetos.append(btnImg)
                     else:
+                        self.__imgLabel = tk.PhotoImage(file=url)
                         labelImg = tk.Label(frame,
                                            text=texto,
-                                           image=self.__imagem,
+                                           image=self.__imgLabel,
                                            compound=tk.TOP)
                         labelImg.config(self.__estilo)
                         labelImg.grid(row=l,column=c)
