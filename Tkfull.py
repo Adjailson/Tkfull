@@ -1,4 +1,4 @@
-#version-0.0.5
+#version-0.0.6
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -130,7 +130,7 @@ class Janela:
             print(f"Erro! -Tipo '{posicao}' é uma String.")
         except NameError:
             print(f"Erro! -Variável '{posicao}' não definida.")
-            
+    
     def getObjetos(self):
         return self.__arrayObjetos
     
@@ -167,5 +167,9 @@ class Janela:
             self.__janela.iconphoto(todas, icon)
         except:
             print("Verifique nome, local, extensão .png e tamanho da imagem!")
-
+    def fechar(self):
+        self.__janela.destroy()
+    def limparObjetos(self):
+        self.__arrayObjetos.clear()
+        self.__arrayObjetos.append(tk.Button)
                 
