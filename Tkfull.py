@@ -1,4 +1,4 @@
-#version-0.0.6
+#version-0.0.7
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -6,7 +6,11 @@ class Janela:
 
     __estilo = {'font':('Arial',14)}
     __arrayObjetos = [tk.Button]
-
+    __filesImagens = [tk.PhotoImage]
+    __imgButton = tk.Button
+    __imgLabel = tk.Label
+    __fileImg = object
+    
     def __init__(self):
         self.__janela = tk.Tk()
         
@@ -52,28 +56,28 @@ class Janela:
 
                 if(type(oQueE) == dict):#Button imagen
                     texto = str
-                    url = str
                     for i in oQueE:
                         texto = i
-                        url = oQueE.get(i)
+                        fileImg = tk.PhotoImage(file=oQueE.get(i))
+                        self.__filesImagens.append(fileImg)
+
+                    self.__fileImg = self.__filesImagens[-1]
                     if("*" in texto):
-                        self.__imgButton = tk.PhotoImage(file=url)
-                        btnImg = tk.Button(frame,
+                        self.__imgButton = tk.Button(frame,
                                            text=texto[1:len(texto)],
-                                           image=self.__imgButton,
+                                           image=self.__fileImg,
                                            compound=tk.LEFT)
-                        btnImg.config(self.__estilo)
-                        btnImg.grid(row=l,column=c)
-                        self.__arrayObjetos.append(btnImg)
-                    else:
-                        self.__imgLabel = tk.PhotoImage(file=url)
-                        labelImg = tk.Label(frame,
-                                           text=texto,
-                                           image=self.__imgLabel,
+                        self.__imgButton.config(self.__estilo)
+                        self.__imgButton.grid(row=l,column=c)
+                        self.__arrayObjetos.append(self.__imgButton)
+                        
+                    if(not("*" in texto)):
+                        self.__imgLabel = tk.Label(frame,
+                                           image=self.__fileImg,
                                            compound=tk.TOP)
-                        labelImg.config(self.__estilo)
-                        labelImg.grid(row=l,column=c)
-                        self.__arrayObjetos.append(labelImg)
+                        self.__imgLabel.config(self.__estilo)
+                        self.__imgLabel.grid(row=l,column=c)
+                        self.__arrayObjetos.append(self.__imgLabel)
                     
         frame.pack()
         
