@@ -1,4 +1,4 @@
-#version-0.0.7
+#version-0.0.8
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -18,35 +18,48 @@ class Janela:
         return self.__janela.mainloop()
 
     def gerar(self,objetos):
-        frame = tk.Frame(self.__janela)
+        '''
+        self.__layout = tk.Frame(self.__janela)
+        canvas = tk.Canvas(self.__layout)
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH,expand=1)
+
+        scroll = tk.Scrollbar(self.__layout,orient=tk.VERTICAL,command=canvas.yview)
+        scroll.pack(side=tk.RIGHT,fill=tk.Y)
+
+        canvas.configure(yscrollcommand=scroll.set)
+        canvas.bind('<Configure>',lambda e:canvas.configure(scrollregion = canvas.bbox("all")))
+        self.__layout2 = tk.Frame(canvas)
+        canvas.create_window((0,0),window=self.__layout,anchor="nw")
+        '''
+        self.__layout2 = tk.Frame(self.__janela)
         for l in range(len(objetos)):
             for c in range(len(objetos[l])):
                 oQueE = objetos[l][c]
                 if(oQueE == input):#Campo de texto
-                    campo = tk.Entry(frame)
+                    campo = tk.Entry(self.__layout2)
                     campo.config(self.__estilo)
                     campo.grid(row=l,column=c)
                     self.__arrayObjetos.append(campo)
                 if(oQueE == complex):#Campo de senha
-                    senha = tk.Entry(frame,show="*")
+                    senha = tk.Entry(self.__layout2,show="*")
                     senha.config(self.__estilo)
                     senha.grid(row=l,column=c)
                     self.__arrayObjetos.append(senha)
                 if(type(oQueE) == str):#Achei Label ou Button
                     if("*" in oQueE):#Botao
-                        btn = tk.Button(frame,
+                        btn = tk.Button(self.__layout2,
                                         text=oQueE[1:len(oQueE)])
                         btn.config(self.__estilo)
                         btn.grid(row=l,column=c)
                         self.__arrayObjetos.append(btn)
                     if(not("*" in oQueE)):#Label
-                        label = tk.Label(frame,text=oQueE)
+                        label = tk.Label(self.__layout2,text=oQueE)
                         label.config(self.__estilo)
                         label.grid(row=l,column=c)
                         self.__arrayObjetos.append(label)
                         
                 if(type(oQueE) == tuple):#Select
-                    box = ttk.Combobox(frame,
+                    box = ttk.Combobox(self.__layout2,
                                        values=oQueE,
                                        font=("Arial",13),
                                        state="readonly")
@@ -63,7 +76,7 @@ class Janela:
 
                     self.__fileImg = self.__filesImagens[-1]
                     if("*" in texto):
-                        self.__imgButton = tk.Button(frame,
+                        self.__imgButton = tk.Button(self.__layout2,
                                            text=texto[1:len(texto)],
                                            image=self.__fileImg,
                                            compound=tk.LEFT)
@@ -72,14 +85,15 @@ class Janela:
                         self.__arrayObjetos.append(self.__imgButton)
                         
                     if(not("*" in texto)):
-                        self.__imgLabel = tk.Label(frame,
+                        self.__imgLabel = tk.Label(self.__layout2,
+                                                   text = texto,
                                            image=self.__fileImg,
                                            compound=tk.TOP)
                         self.__imgLabel.config(self.__estilo)
                         self.__imgLabel.grid(row=l,column=c)
                         self.__arrayObjetos.append(self.__imgLabel)
                     
-        frame.pack()
+        self.__layout2.pack()
         
     def mensagem(self,msg,tipo=None):
         if(tipo == None):
@@ -117,7 +131,7 @@ class Janela:
 
     def setEstilo(self, posicao, estilo):
         self.__arrayObjetos[posicao].config(estilo)
-    
+        
     def getTexto(self,posicao):
         try:
             if(type(self.__arrayObjetos[posicao]) == tk.Entry):
